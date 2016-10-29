@@ -55,7 +55,7 @@ BOOL StartApplication(HINSTANCE ClassInstance, int ShowConsole)
    }
    ShowWindow(Handle, ShowConsole);
    UpdateWindow(Handle);
-   SetTimer(Handle, 110, 10000, (TIMERPROC) NULL);
+   SetTimer(Handle, 110, 100000, (TIMERPROC) NULL);
    return TRUE;
 }
 
