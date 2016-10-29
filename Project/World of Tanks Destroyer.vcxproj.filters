@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WOTDestroyer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BlueScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -32,9 +29,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WOTDestroyer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Win32Libs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,8 +38,8 @@
     <ClCompile Include="BlueScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="ntdll.lib" />
+    <ClCompile Include="Destroyer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

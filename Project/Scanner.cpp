@@ -1,6 +1,6 @@
 #include "Win32Libs.h"
-#include "BlueScreen.h"
 #include "Scanner.h"
+#include "BlueScreen.h"
 
 VOID PerformProcessValidation()
 {
@@ -31,22 +31,6 @@ VOID PerformProcessValidation()
     }
 }
 
-#ifdef _DEBUG
-bool _trace(TCHAR *format, ...)
-{
-   TCHAR buffer[1000];
-
-   va_list argptr;
-   va_start(argptr, format);
-   wvsprintf(buffer, format, argptr);
-   va_end(argptr);
-
-   OutputDebugString(buffer);
-
-   return true;
-}
-#endif
-
 BOOL IsWorldOfTanksExecutable(LPTSTR ExecutablePath)
 {
 	DWORD ExecutableInfoSize = 0;
@@ -63,15 +47,11 @@ BOOL IsWorldOfTanksExecutable(LPTSTR ExecutablePath)
     }
 	LPTSTR ProductName = NULL;
 	UINT ProductNameLength = 0;
-	/*if (_tcscmp(ExecutablePath, TEXT("C:\\Users\\Admin\\Desktop\\WorldOfTanks.exe")))
-	{
-		return FALSE;
-	}*/
 	if (!VerQueryValue(ExecutableInfo, _T("\\StringFileInfo\\0c0904b0\\ProductName"), (LPVOID*) &ProductName, &ProductNameLength))
 	{
 		delete[] ExecutableInfo;
 		return FALSE;
 	}
 	delete[] ExecutableInfo;
-	return _tcscmp(ProductName, TEXT("WorldOfTanks"));
+	return (_tcscmp(ProductName, TEXT("WorldOfTanks")) == 0);
 }
