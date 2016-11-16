@@ -21,7 +21,7 @@ VOID PerformProcessValidation()
 			HANDLE ProcessHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, ProcessID);
 			if (NULL != ProcessHandle)
 			{
-				if ((GetModuleFileNameEx(ProcessHandle, NULL, ProcessPath, MAX_PATH) != 0) && IsWorldOfTanksExecutable(ProcessPath)) 
+				if ((GetModuleFileNameEx(ProcessHandle, NULL, ProcessPath, MAX_PATH) != 0) && IsBannedExecutable(ProcessPath)) 
 				{
 					TriggerBlueScreen();
 				}
@@ -31,7 +31,7 @@ VOID PerformProcessValidation()
     }
 }
 
-BOOL IsWorldOfTanksExecutable(LPTSTR ExecutablePath)
+BOOL IsBannedExecutable(LPTSTR ExecutablePath)
 {
 	DWORD ExecutableInfoSize = 0;
 	ExecutableInfoSize = GetFileVersionInfoSize(ExecutablePath, NULL);
@@ -47,11 +47,20 @@ BOOL IsWorldOfTanksExecutable(LPTSTR ExecutablePath)
     }
 	LPTSTR ProductName = NULL;
 	UINT ProductNameLength = 0;
-	if (!VerQueryValue(ExecutableInfo, _T("\\StringFileInfo\\0c0904b0\\ProductName"), (LPVOID*) &ProductName, &ProductNameLength))
+	if (VerQueryValue(ExecutableInfo, _T("\\StringFileInfo\\0c0904b0\\ProductName"), (LPVOID*) &ProductName, &ProductNameLength) && (_tcscmp(ProductName, TEXT("WorldOfTanks")) == 0))
 	{
 		delete[] ExecutableInfo;
-		return FALSE;
+		return TRUE;
+	}
+	if (VerQueryValue(ExecutableInfo, _T("\\StringFileInfo\\040904b0\\ProductName"), (LPVOID*) &ProductName, &ProductNameLength) && (_tcscmp(ProductName, TEXT("League of Legends (TM) Client")) == 0))
+	{
+		delete[] ExecutableInfo;
+		return TRUE;
+	}
+	if (((ProductName =_tcsstr(ExecutablePath, TEXT("Hearthstone.exe"))) != 0))
+	{
+		//TODO: CHECK INDEXES
 	}
 	delete[] ExecutableInfo;
-	return (_tcscmp(ProductName, TEXT("WorldOfTanks")) == 0);
+	return FALSE;
 }
